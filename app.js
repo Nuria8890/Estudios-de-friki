@@ -1,9 +1,16 @@
-const express = require('express')
-const app = express()
-const port = 3000
+var finalhandler = require('finalhandler')
+var http = require('http')
+var serveStatic = require('serve-static')
 
-app.use(express.static('public'))
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+// Serve up public/ftp folder
+var serve = serveStatic('public/', {
+  cacheControl: false
 })
+
+// Create server
+var server = http.createServer(function onRequest (req, res) {
+  serve(req, res, finalhandler(req, res))
+})
+
+// Listen
+server.listen(3000)
